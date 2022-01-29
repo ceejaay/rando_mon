@@ -76,4 +76,58 @@ defmodule RandoMon.AccountTest do
       assert %Ecto.Changeset{} = Account.change_user(user)
     end
   end
+
+  describe "pokemon" do
+    alias RandoMon.Account.Pokemon
+
+    import RandoMon.AccountFixtures
+
+    @invalid_attrs %{name: nil}
+
+    test "list_pokemon/0 returns all pokemon" do
+      pokemon = pokemon_fixture()
+      assert Account.list_pokemon() == [pokemon]
+    end
+
+    test "get_pokemon!/1 returns the pokemon with given id" do
+      pokemon = pokemon_fixture()
+      assert Account.get_pokemon!(pokemon.id) == pokemon
+    end
+
+    test "create_pokemon/1 with valid data creates a pokemon" do
+      valid_attrs = %{name: "some name"}
+
+      assert {:ok, %Pokemon{} = pokemon} = Account.create_pokemon(valid_attrs)
+      assert pokemon.name == "some name"
+    end
+
+    test "create_pokemon/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Account.create_pokemon(@invalid_attrs)
+    end
+
+    test "update_pokemon/2 with valid data updates the pokemon" do
+      pokemon = pokemon_fixture()
+      update_attrs = %{name: "some updated name"}
+
+      assert {:ok, %Pokemon{} = pokemon} = Account.update_pokemon(pokemon, update_attrs)
+      assert pokemon.name == "some updated name"
+    end
+
+    test "update_pokemon/2 with invalid data returns error changeset" do
+      pokemon = pokemon_fixture()
+      assert {:error, %Ecto.Changeset{}} = Account.update_pokemon(pokemon, @invalid_attrs)
+      assert pokemon == Account.get_pokemon!(pokemon.id)
+    end
+
+    test "delete_pokemon/1 deletes the pokemon" do
+      pokemon = pokemon_fixture()
+      assert {:ok, %Pokemon{}} = Account.delete_pokemon(pokemon)
+      assert_raise Ecto.NoResultsError, fn -> Account.get_pokemon!(pokemon.id) end
+    end
+
+    test "change_pokemon/1 returns a pokemon changeset" do
+      pokemon = pokemon_fixture()
+      assert %Ecto.Changeset{} = Account.change_pokemon(pokemon)
+    end
+  end
 end

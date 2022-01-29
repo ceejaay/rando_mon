@@ -12,6 +12,7 @@ defmodule RandoMonWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    resources "/pokemon", RandoMonWeb.PokemonController, except: [:new, :edit]
   end
 
   scope "/", RandoMonWeb do

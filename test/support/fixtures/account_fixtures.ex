@@ -23,4 +23,18 @@ defmodule RandoMon.AccountFixtures do
 
     user
   end
+
+  @doc """
+  Generate a pokemon.
+  """
+  def pokemon_fixture(attrs \\ %{}) do
+    {:ok, pokemon} =
+      attrs
+      |> Enum.into(%{
+        name: "some name"
+      })
+      |> RandoMon.Account.create_pokemon()
+
+    pokemon
+  end
 end
